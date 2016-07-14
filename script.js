@@ -1,7 +1,7 @@
 var g = {
   fps: 60,
-  numberOfBalls: 100,
-  balls: null,
+  numberOfBalls: 50,
+  balls: [],
   currentTime: null,
   lastTime: null,
   canvas: null,
@@ -34,16 +34,23 @@ var g = {
     clearInterval(g.intervalHandle);
   },
   generateBalls: function() {
-    g.balls = [];
-    for (var i = 0; i < g.numberOfBalls; i++) {
+    //add balls if required
+    for (var i = g.balls.length; i < g.numberOfBalls; i++) {
+      g.addRandomBall();
+    }
+    //remove balls if the current number exceeds the required
+    if (g.balls.length > g.numberOfBalls) {
+      g.balls.splice(g.numberOfBalls);
+    }
+  },
+  addRandomBall: function() {
       var r = g.randRange(1, 10) * 5,
           x = g.randRange(r, g.canvas.width - r),
           y = g.randRange(r, g.canvas.height - r),
-          dx = g.randRange(1, 40) * 10,
-          dy = g.randRange(1, 50) * 10,
+          dx = g.randRange(-30, 30) * 20,
+          dy = g.randRange(-30, 30) * 20,
           color = g.randomColor();
       g.balls.push(new Ball(x, y, r, dx, dy, color));
-    }
   },
   randomColor: function() {
     var hexValues = '0123456789ABCDEF'.split('');
